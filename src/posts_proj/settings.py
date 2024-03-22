@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'crispy_forms',
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -73,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'posts_proj.wsgi.application'
 
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
