@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div>
-<button id="back-btn" class="btn btn-info">back</button>
+<a href="{% url 'posts:main-board' %}" id="back-btn" class="btn btn-info">back</a>
     {% if obj.get_photos %}
         <div id="carouselExampleControls" class="carousel slide mt-1" data-bs-ride="carousel">
             <div class="carousel-inner">

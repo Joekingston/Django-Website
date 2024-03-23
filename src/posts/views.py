@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from .models import Post
-from django.http import JsonResponse
+from .models import Post, Photo
+from django.http import JsonResponse, HttpResponse
 from .forms import PostForms
 from profiles.models import Profile
+from .utils import action_permission
 
 
 
@@ -102,9 +103,20 @@ def update_post(request, pk):
             'body': new_body,
         })
 
+@action_permission
 def delete_post(request, pk):
     obj = Post.objects.get(pk=pk)
     if is_ajax(request=request):
         obj.delete() 
-    return JsonResponse({})
+        return JsonResponse({'msg': 'some message'})
+    return JsonResponse({'msg': 'Access Denied - AJAX only'})
+
+def image_upload_view(request):
+    if request.method == 'POST':
+        img = request.FILES.get('file')
+        new_post_id = request.POST.get('new_post_id')
+        post = Post.objects.get(id=new_post_id)
+        Photo.objects.create(image=img, post=post)
+    return HttpResponse()
+
 

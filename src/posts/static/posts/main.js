@@ -1,4 +1,3 @@
-console.log('hello world')
 
 const postsBox = document.getElementById('posts-box')
 const spinnerBox = document.getElementById('spinner-box')
@@ -9,7 +8,10 @@ const postForm = document.getElementById('post-form')
 const title = document.getElementById('id_title')
 const body = document.getElementById('id_body')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
-console.log('csrf', csrf[0].value)
+
+const dropzone = document.getElementById('my-dropzone')
+const addBtn = document.getElementById('add-btn')
+const closeBtn = [...document.getElementsByClassName('add-modal-close')]
 
 const alertBox = document.getElementById('alert-box')
 
@@ -93,7 +95,7 @@ const getData = () => {
                                 </div>
                                 <div class="col-2">
                                     <form class="like-unlike-forms" data-form-id="${element.id}">
-                                        <button href="#" class="btn btn-primary" id="like-unlike-${element.id}">${element.liked ? `Unlike (${element.count})`: `Like (${element.count})`}</button>
+                                        <button class="btn btn-primary" id="like-unlike-${element.id}">${element.liked ? `Unlike (${element.count})`: `Like (${element.count})`}</button>
                                     </form>
                                 </div>
                             </div>    
@@ -124,6 +126,7 @@ loadBtn.addEventListener('click', ()=>{
     getData()
 })
 
+let newPostId = null
 postForm.addEventListener('submit', e=>{
     e.preventDefault()
    
@@ -139,6 +142,7 @@ postForm.addEventListener('submit', e=>{
         
         success: function(response){ console.log("ive made it")
             console.log(response)
+            newPostId = response.id
             postsBox.insertAdjacentHTML("afterbegin", `
                 <div class="card mb-2";">
                     <div class="card-body">
@@ -149,11 +153,11 @@ postForm.addEventListener('submit', e=>{
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-2">
-                                <a href="#" class="btn btn-primary">Details</a>
+                                <a href="${url}${response.id}" class="btn btn-primary">Details</a>
                             </div>
                             <div class="col-2">
                                 <form class="like-unlike-forms" data-form-id="${response.id}">
-                                    <button href="#" class="btn btn-primary" id="like-unlike-${response.id}">Like (0)</button>
+                                    <button class="btn btn-primary" id="like-unlike-${response.id}">Like (0)</button>
                                 </form>
                             </div>
                         </div>    
@@ -161,9 +165,9 @@ postForm.addEventListener('submit', e=>{
                 </div>
             `)
             likeUnlikePosts()
-            $('#addPostModal').modal('hide')
+            // $('#addPostModal').modal('hide')
             handleAlerts('success', 'New post added!')
-            postForm.reset()
+            // postForm.reset()
 
         },
         error: function(error){
@@ -171,6 +175,35 @@ postForm.addEventListener('submit', e=>{
             handleAlerts('danger', 'Oops... something went wrong!')
         },
     })
+})
+
+
+addBtn.addEventListener('click', ()=>{
+    dropzone.classList.remove('not-visible')
+})
+
+closeBtn.forEach(btn=>btn.addEventListener('click', ()=>{
+    postForm.reset()
+    if (!dropzone.classList.contains('not-visible')){
+        dropzone.classList.add('not-visible')   
+    }
+    const myDropzone = Dropzone.forElement("#my-dropzone")
+    myDropzone.removeAllFiles(true)
+
+}))
+
+Dropzone.autoDiscover = false
+const myDropzone = new Dropzone('#my-dropzone', {
+    url: 'upload/',
+    init: function() {
+        this.on('sending', function(file, xhr, formData){
+            formData.append('csrfmiddlewaretoken', csrftoken)
+            formData.append('new_post_id', newPostId)
+        })
+    },
+    maxFiles: 3,
+    maxFilesize: 4,
+    acceptedFiles: '.png, .jpg, jpeg'
 })
 
 getData()

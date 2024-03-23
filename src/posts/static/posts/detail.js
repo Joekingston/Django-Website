@@ -22,9 +22,9 @@ const deleteForm = document.getElementById('delete-form')
 
 
 
-backBtn.addEventListener('click', ()=>{
-    history.back()
-})
+// backBtn.addEventListener('click', ()=>{
+//     history.back()
+// })
 
 $.ajax({
     type: 'GET',
