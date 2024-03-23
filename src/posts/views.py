@@ -30,6 +30,16 @@ def post_list_and_create(request):
     }
     return render(request, 'posts/main.html', context)
 
+def post_detail(request, pk):
+    obj = Post.objects.get(pk=pk)
+    form = PostForms()
+    
+    context = {
+        'obj': obj,
+        'form': form,
+    }
+    return render(request, 'posts/detail.html', context)
+
 def load_post_data_view(request, num_posts):
     if is_ajax(request=request):
         visible = 3
@@ -50,6 +60,19 @@ def load_post_data_view(request, num_posts):
             }
             data.append(item)
         return JsonResponse({'data':data[lower:upper], 'size': size})
+    
+def post_detail_data_view(request, pk):
+    obj = Post.objects.get(pk=pk)
+    data = {
+        'id': obj.id,
+        'title': obj.title,
+        'body': obj.body,
+        'liked': True if request.user in obj.liked.all() else False,
+        'count': obj.like_count,
+        'author': obj.author.user.username,
+        'logged_in': request.user.username,
+    }
+    return JsonResponse({'data': data})
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
@@ -66,5 +89,22 @@ def like_unlike_post(request):
             obj.liked.add(request.user)
         return JsonResponse({'liked': liked, 'count': obj.like_count})
 
-def hello_world_view(request):
-    return JsonResponse({'text': 'hello world'})
+def update_post(request, pk):
+    obj = Post.objects.get(pk=pk)
+    if is_ajax(request=request):
+        new_title = request.POST.get('title')
+        new_body = request.POST.get('body')
+        obj.title = new_title
+        obj.body = new_body
+        obj.save()
+        return JsonResponse({
+            'title': new_title,
+            'body': new_body,
+        })
+
+def delete_post(request, pk):
+    obj = Post.objects.get(pk=pk)
+    if is_ajax(request=request):
+        obj.delete() 
+    return JsonResponse({})
+
