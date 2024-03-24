@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post, Photo
 from django.http import JsonResponse, HttpResponse
 from .forms import PostForms
 from profiles.models import Profile
 from .utils import action_permission
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
+
 
 
 # Create your views here.

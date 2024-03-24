@@ -180,6 +180,7 @@ postForm.addEventListener('submit', e=>{
 
 addBtn.addEventListener('click', ()=>{
     dropzone.classList.remove('not-visible')
+    addBtn.classList.add('not-visible')
 })
 
 closeBtn.forEach(btn=>btn.addEventListener('click', ()=>{
@@ -187,9 +188,12 @@ closeBtn.forEach(btn=>btn.addEventListener('click', ()=>{
     if (!dropzone.classList.contains('not-visible')){
         dropzone.classList.add('not-visible')   
     }
+    if(!addBtn.classList.contains('not-visible')){
+        addBtn.classList.remove('not-visible')
+    }
     const myDropzone = Dropzone.forElement("#my-dropzone")
     myDropzone.removeAllFiles(true)
-
+    
 }))
 
 Dropzone.autoDiscover = false

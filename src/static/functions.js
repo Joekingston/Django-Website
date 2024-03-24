@@ -5,3 +5,4 @@ const handleAlerts = (type, msg) => {
     </div> 
     `
 }
+

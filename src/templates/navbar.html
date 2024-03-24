@@ -1,7 +1,11 @@
 {% url 'posts:main-board' as path_to_home %}
 {% url 'profiles:my-profile' as path_to_my_profile %}
+{% url 'accounts:logout' as path_to_logout %}
+{% url 'accounts:login' as path_to_login %}
+{% url 'accounts:signup' as path_to_signup %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ path_to_home }}">A04</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -15,6 +19,20 @@
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == path_to_my_profile %}active{% endif %}" href="{{ path_to_my_profile }}">My Profile</a>
                 </li>
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == path_to_logout %}active{% endif %}" href="{{ path_to_logout }}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == path_to_login %}active{% endif %}" href="{{ path_to_login }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == path_to_signup %}active{% endif %}" href="{{ path_to_signup }}">Sign-up</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
