@@ -2,13 +2,13 @@ from django.shortcuts import render
 from .models import Profile
 from .forms import ProfileForms
 from django.http import JsonResponse
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
-
+@login_required
 def my_profile_view(request):
     obj = Profile.objects.get(user=request.user)
     form = ProfileForms(request.POST or None, request.FILES or None, instance=obj)
