@@ -188,7 +188,7 @@ closeBtn.forEach(btn=>btn.addEventListener('click', ()=>{
     if (!dropzone.classList.contains('not-visible')){
         dropzone.classList.add('not-visible')   
     }
-    if(!addBtn.classList.contains('not-visible')){
+    if(addBtn.classList.contains('not-visible')){
         addBtn.classList.remove('not-visible')
     }
     const myDropzone = Dropzone.forElement("#my-dropzone")

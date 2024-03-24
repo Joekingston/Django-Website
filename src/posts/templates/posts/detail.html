@@ -24,11 +24,16 @@
                         {{ form.as_p }}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">close</button>
-                            <button type="submit" class="btn btn-success">update</button>
+                            <button type="submit" id="add-btn" class="btn btn-success">update</button>
+                        </div>
+                    </form>
+                    <form action="upload/" id="my-dropzone" class="dropzone dz">
+                        {% csrf_token %}
+                        <div class="fallback">
+                            <input name="file" type-"file" multiple/>
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -54,7 +59,7 @@
                 </div>
             </div>
         </div>
-<a href="{% url 'posts:main-board' %}" id="back-btn" class="btn btn-info">back</a>
+    <a href="{% url 'posts:main-board' %}" id="back-btn" class="btn btn-info">back</a>
     {% if obj.get_photos %}
         <div id="carouselExampleControls" class="carousel slide mt-1" data-bs-ride="carousel">
             <div class="carousel-inner">

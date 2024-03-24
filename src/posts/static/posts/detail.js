@@ -2,6 +2,7 @@ const backBtn = document.getElementById("back-btn")
 
 // url
 const url = window.location.href + "data/"
+
 const updateUrl = window.location.href + "update/"
 const deleteUrl = window.location.href + "delete/"
 
@@ -18,6 +19,9 @@ const bodyInput = document.getElementById('id_body')
 // forms
 const updateForm = document.getElementById('update-form')
 const deleteForm = document.getElementById('delete-form')
+const dropzone = document.getElementById('my-dropzone')
+const addBtn = document.getElementById('add-btn')
+const closeBtn = [...document.getElementsByClassName('add-modal-close')]
 
 
 
@@ -25,13 +29,14 @@ const deleteForm = document.getElementById('delete-form')
 // backBtn.addEventListener('click', ()=>{
 //     history.back()
 // })
-
+let newPostId = null
 $.ajax({
     type: 'GET',
     url: url,
     success: function(response){
         console.log(response)
         const data = response.data
+        newPostId = data.id
         if(data.logged_in !== data.author){
             console.log('different')
         } else {
@@ -39,7 +44,7 @@ $.ajax({
             updateBtn.classList.remove('not-visible')
             deleteBtn.classList.remove('not-visible')
         }
-
+        console.log(newPostId)
         const titleEl = document.createElement('h3')
         titleEl.setAttribute('class', 'mt-3')
         titleEl.setAttribute('id', 'title')
@@ -92,6 +97,18 @@ updateForm.addEventListener('submit', e=>{
 
 
 })
+closeBtn.forEach(btn=>btn.addEventListener('click', ()=>{
+    postForm.reset()
+    if (!dropzone.classList.contains('not-visible')){
+        dropzone.classList.add('not-visible')   
+    }
+    if(addBtn.classList.contains('not-visible')){
+        addBtn.classList.remove('not-visible')
+    }
+    const myDropzone = Dropzone.forElement("#my-dropzone")
+    myDropzone.removeAllFiles(true)
+    
+}))
 
 deleteForm.addEventListener('submit', e=>{
     e.preventDefault()
@@ -114,4 +131,24 @@ deleteForm.addEventListener('submit', e=>{
             console.log('error', error)
         },
     })
+})
+
+Dropzone.autoDiscover = false
+const myDropzone = new Dropzone('#my-dropzone', {
+    url: '/upload/',
+    init: function() {
+        this.on('sending', function(file, xhr, formData){
+            formData.append('csrfmiddlewaretoken', csrf[0].value)
+            formData.append('new_post_id', newPostId)
+        })
+    },
+    maxFiles: 3,
+    maxFilesize: 4,
+    acceptedFiles: '.png, .jpg, jpeg'
+})
+
+addBtn.addEventListener('click', ()=>{
+    const myDropzone = Dropzone.forElement("#my-dropzone")
+    myDropzone.removeAllFiles(true)
+    location.reload();
 })
