@@ -10,6 +10,7 @@ const spinnerBox = document.getElementById('spinner-box')
 const updateBtn = document.getElementById("update-btn")
 const deleteBtn = document.getElementById("delete-btn")
 const postsBox = document.getElementById('posts-box')
+const authorBox = document.getElementById('author-box')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
 const alertBox = document.getElementById('alert-box')
 
@@ -53,11 +54,18 @@ $.ajax({
         bodyEl.setAttribute('class', 'mt-1')
         bodyEl.setAttribute('id', 'body')
 
+        const footerEl = document.createElement('p')
+        footerEl.setAttribute('class', 'mt-1')
+        footerEl.setAttribute('id', 'body')
+
+
+        footerEl.textContent = data.author
         titleEl.textContent = data.title
         bodyEl.textContent = data.body
 
         postsBox.appendChild(titleEl)
         postsBox.appendChild(bodyEl)
+        authorBox.appendChild(footerEl)
 
         titleInput.value = data.title
         bodyInput.value = data.body
