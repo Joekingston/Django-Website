@@ -1,6 +1,12 @@
 # Social Website Project
+
+## Running the Project
+
+To run the project, activate your virtual environment and start the Django server:
+
+```bash
 my_venv\Scripts\activate
-cd /src 
+cd /src
 python manage.py runserver
 
 
