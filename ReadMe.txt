@@ -1,8 +1,8 @@
+# Social Website Project
 my_venv\Scripts\activate
 cd /src 
 python manage.py runserver
 
-# Social Website Project
 
 ## Screenshots
 
