@@ -8,7 +8,7 @@ To run the project, activate your virtual environment and start the Django serve
 my_venv\Scripts\activate
 cd /src
 python manage.py runserver
-
+```
 
 ## Screenshots
 
